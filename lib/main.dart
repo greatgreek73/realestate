@@ -3,6 +3,8 @@ import 'package:flutter/services.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'models/investment.dart';
+import 'models/payment.dart';
+import 'models/scheduled_payment.dart';
 import 'screens/investment_list_screen.dart';
 import 'theme/app_colors.dart';
 
@@ -12,7 +14,7 @@ void main() async {
   // Устанавливаем режим immersiveSticky для автоматического скрытия системных панелей
   SystemChrome.setEnabledSystemUIMode(
     SystemUiMode.immersiveSticky,
-    overlays: [], // Пустой список означает, что все оверлеи будут скрыты
+    overlays: [],
   );
 
   // Устанавливаем прозрачность и цвет системных панелей для случаев, когда они видны
@@ -25,8 +27,16 @@ void main() async {
   ));
 
   await Hive.initFlutter();
+  
+  // Регистрируем адаптеры
   Hive.registerAdapter(InvestmentAdapter());
+  Hive.registerAdapter(PaymentAdapter());
+  Hive.registerAdapter(ScheduledPaymentAdapter());
+  
+  // Открываем боксы
   await Hive.openBox<Investment>('investmentsBox');
+  await Hive.openBox<Payment>('paymentsBox');
+  await Hive.openBox<ScheduledPayment>('scheduledPaymentsBox');
 
   runApp(const MyApp());
 }
@@ -104,37 +114,5 @@ class MyApp extends StatelessWidget {
       ),
       home: const InvestmentListScreen(),
     );
-  }
-}
-
-@HiveType(typeId: 0)
-class InvestmentAdapter extends TypeAdapter<Investment> {
-  @override
-  final int typeId = 0;
-
-  @override
-  Investment read(BinaryReader reader) {
-    return Investment(
-      propertyName: reader.readString(),
-      investmentAmount: reader.readDouble(),
-      amountPaid: reader.readDouble(),
-      country: reader.readString(),
-      location: reader.readString(),
-      area: reader.readDouble(),
-      startDate: DateTime.fromMillisecondsSinceEpoch(reader.readInt()),
-      endDate: DateTime.fromMillisecondsSinceEpoch(reader.readInt()),
-    );
-  }
-
-  @override
-  void write(BinaryWriter writer, Investment obj) {
-    writer.writeString(obj.propertyName);
-    writer.writeDouble(obj.investmentAmount);
-    writer.writeDouble(obj.amountPaid);
-    writer.writeString(obj.country);
-    writer.writeString(obj.location);
-    writer.writeDouble(obj.area);
-    writer.writeInt(obj.startDate.millisecondsSinceEpoch);
-    writer.writeInt(obj.endDate.millisecondsSinceEpoch);
   }
 }

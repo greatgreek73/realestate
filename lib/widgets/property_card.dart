@@ -1,16 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import '../models/investment.dart';
+import '../screens/property_detail_screen.dart';
 import '../theme/app_colors.dart';
 
 class PropertyCard extends StatelessWidget {
   final Investment investment;
   final VoidCallback? onDelete;
+  final bool isDetailScreen;
 
   const PropertyCard({
     Key? key,
     required this.investment,
     this.onDelete,
+    this.isDetailScreen = false,
   }) : super(key: key);
 
   @override
@@ -26,13 +29,13 @@ class PropertyCard extends StatelessWidget {
       return formatted.replaceAll(',', '.');
     }
 
-    return Container(
+    Widget cardContent = Container(
       margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       decoration: BoxDecoration(
         color: AppColors.surface,
         borderRadius: BorderRadius.circular(24),
         border: Border.all(
-          color: AppColors.accent.withOpacity(0.5),
+          color: AppColors.accent.withOpacity(0.2),
           width: 1,
         ),
         boxShadow: [
@@ -202,6 +205,23 @@ class PropertyCard extends StatelessWidget {
         ),
       ),
     );
+
+    // Делаем карточку кликабельной только если это не детальный экран
+    if (!isDetailScreen) {
+      return InkWell(
+        onTap: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => PropertyDetailScreen(investment: investment),
+            ),
+          );
+        },
+        child: cardContent,
+      );
+    }
+
+    return cardContent;
   }
 
   Widget _buildInfoPill({
