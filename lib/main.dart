@@ -9,7 +9,13 @@ import 'theme/app_colors.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   
-  // Настройка полноэкранного режима и прозрачности системных панелей
+  // Устанавливаем режим immersiveSticky для автоматического скрытия системных панелей
+  SystemChrome.setEnabledSystemUIMode(
+    SystemUiMode.immersiveSticky,
+    overlays: [], // Пустой список означает, что все оверлеи будут скрыты
+  );
+
+  // Устанавливаем прозрачность и цвет системных панелей для случаев, когда они видны
   SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
     statusBarColor: Colors.transparent,
     systemNavigationBarColor: Colors.transparent,
@@ -17,12 +23,6 @@ void main() async {
     statusBarIconBrightness: Brightness.light,
     systemNavigationBarIconBrightness: Brightness.light,
   ));
-
-  // Скрытие системных панелей
-  await SystemChrome.setEnabledSystemUIMode(
-    SystemUiMode.edgeToEdge,
-    overlays: [],
-  );
 
   await Hive.initFlutter();
   Hive.registerAdapter(InvestmentAdapter());
