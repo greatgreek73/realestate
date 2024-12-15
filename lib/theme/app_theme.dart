@@ -3,7 +3,7 @@ import 'app_colors.dart';
 
 class AppTheme {
   static ThemeData darkTheme = ThemeData(
-    primaryColor: AppColors.primary,
+    primaryColor: AppColors.accent,
     scaffoldBackgroundColor: AppColors.background,
     brightness: Brightness.dark,
     useMaterial3: true,
@@ -13,36 +13,63 @@ class AppTheme {
       elevation: 0,
       centerTitle: true,
       titleTextStyle: TextStyle(
-        color: Colors.white,
+        color: AppColors.textPrimary,
         fontSize: 20,
         fontWeight: FontWeight.bold,
       ),
     ),
 
-    colorScheme: ColorScheme.dark(
-      primary: AppColors.primary,
-      secondary: AppColors.secondary,
+    colorScheme: const ColorScheme.dark(
+      primary: AppColors.accent,
+      secondary: AppColors.accent,
       background: AppColors.background,
       surface: AppColors.surface,
-      onBackground: Colors.white,
-      onSurface: Colors.white,
+      onBackground: AppColors.textPrimary,
+      onSurface: AppColors.textPrimary,
+      onPrimary: Colors.black,
     ),
 
     inputDecorationTheme: InputDecorationTheme(
       filled: true,
-      fillColor: Colors.white.withOpacity(0.05),
+      fillColor: AppColors.surfaceLight,
       border: OutlineInputBorder(
         borderRadius: BorderRadius.circular(12),
-        borderSide: BorderSide(color: Colors.white.withOpacity(0.1)),
+        borderSide: BorderSide(
+          color: Colors.white.withOpacity(0.1),
+        ),
       ),
       enabledBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(12),
-        borderSide: BorderSide(color: Colors.white.withOpacity(0.1)),
+        borderSide: BorderSide(
+          color: Colors.white.withOpacity(0.1),
+        ),
       ),
       focusedBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(12),
-        borderSide: BorderSide(color: AppColors.primary),
+        borderSide: const BorderSide(
+          color: AppColors.accent,
+        ),
       ),
+    ),
+    
+    elevatedButtonTheme: ElevatedButtonThemeData(
+      style: ElevatedButton.styleFrom(
+        backgroundColor: AppColors.accent,
+        foregroundColor: Colors.black,
+        padding: const EdgeInsets.symmetric(vertical: 16),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(12),
+        ),
+      ),
+    ),
+
+    textTheme: const TextTheme(
+      bodyLarge: TextStyle(color: AppColors.textPrimary),
+      bodyMedium: TextStyle(color: AppColors.textSecondary),
+    ),
+
+    dividerTheme: const DividerThemeData(
+      color: AppColors.divider,
     ),
   );
 }

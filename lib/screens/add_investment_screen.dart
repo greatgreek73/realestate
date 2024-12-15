@@ -35,7 +35,7 @@ class _AddInvestmentScreenState extends State<AddInvestmentScreen> {
         return Theme(
           data: Theme.of(context).copyWith(
             colorScheme: ColorScheme.dark(
-              primary: AppColors.primary,
+              primary: AppColors.accent,
               surface: AppColors.surface,
               onSurface: AppColors.textPrimary,
             ),
@@ -165,7 +165,8 @@ class _AddInvestmentScreenState extends State<AddInvestmentScreen> {
                 ElevatedButton(
                   onPressed: _saveInvestment,
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: AppColors.primary,
+                    backgroundColor: AppColors.accent,
+                    foregroundColor: Colors.black,
                     padding: const EdgeInsets.symmetric(vertical: 16),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(12),
@@ -208,11 +209,11 @@ class _AddInvestmentScreenState extends State<AddInvestmentScreen> {
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12),
           borderSide: BorderSide(
-            color: AppColors.primary,
+            color: AppColors.accent,
           ),
         ),
         filled: true,
-        fillColor: Colors.white.withOpacity(0.05),
+        fillColor: AppColors.surfaceLight,
       ),
       style: const TextStyle(color: Colors.white),
       keyboardType: keyboardType,
@@ -231,11 +232,11 @@ class _AddInvestmentScreenState extends State<AddInvestmentScreen> {
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
         decoration: BoxDecoration(
+          color: AppColors.surfaceLight,
           border: Border.all(
             color: Colors.white.withOpacity(0.1),
           ),
           borderRadius: BorderRadius.circular(12),
-          color: Colors.white.withOpacity(0.05),
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,

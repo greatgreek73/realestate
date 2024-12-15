@@ -1,25 +1,28 @@
 import 'package:flutter/material.dart';
 
 class AppColors {
-  // Основные цвета
-  static const background = Color(0xFF111827); // gray-900
-  static const surface = Color(0xFF1F2937);    // gray-800
-  static const primary = Color(0xFF60A5FA);    // blue-400
-  static const secondary = Color(0xFF34D399);  // green-400
+  // Base colors
+  static const background = Color(0xFF0A0A0A);
+  static const surface = Color(0xFF121212);
+  static const surfaceLight = Color(0xFF1A1A1A);
+  static const accent = Color(0xFFD4AF37);  // Новый золотой цвет
   
-  // Текстовые цвета
+  // Text colors
   static const textPrimary = Colors.white;
-  static const textSecondary = Color(0xFF9CA3AF); // gray-400
-  static const textTertiary = Color(0xFFD1D5DB); // gray-300
-
-  // Градиенты
-  static const cardGradient = LinearGradient(
+  static const textSecondary = Color(0xFF9CA3AF);
+  static const textTertiary = Color(0xFF6B7280);
+  
+  // Additional colors
+  static const divider = Color(0xFF1F2937);
+  static final overlay = Colors.black.withOpacity(0.2);
+  
+  // Gradients
+  static final cardGradient = LinearGradient(
     begin: Alignment.topLeft,
     end: Alignment.bottomRight,
     colors: [
-      Color(0xFF111827), // gray-900
-      Color(0xFF1F2937), // gray-800
-      Color(0xFF1E3A8A), // blue-900
+      surface,
+      Color(0xFF1A1A1A),
     ],
   );
 
@@ -29,14 +32,6 @@ class AppColors {
     colors: [
       Colors.black.withOpacity(0.4),
       Colors.black.withOpacity(0.2),
-    ],
-  );
-
-  static final dividerGradient = LinearGradient(
-    colors: [
-      Color(0xFF1E3A8A).withOpacity(0.2), // blue-900 20%
-      Colors.white.withOpacity(0.2),
-      Color(0xFF1E3A8A).withOpacity(0.2), // blue-900 20%
     ],
   );
 }

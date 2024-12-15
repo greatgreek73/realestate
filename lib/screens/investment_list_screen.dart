@@ -15,7 +15,12 @@ class InvestmentListScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: AppColors.background,
       appBar: AppBar(
-        title: const Text('My Real Estate Investments'),
+        title: const Text(
+          'My Real Estate Investments',
+          style: TextStyle(color: AppColors.textPrimary),
+        ),
+        backgroundColor: Colors.transparent,
+        elevation: 0,
       ),
       body: ValueListenableBuilder(
         valueListenable: investmentsBox.listenable(),
@@ -25,7 +30,7 @@ class InvestmentListScreen extends StatelessWidget {
               child: Text(
                 'No investments yet',
                 style: TextStyle(
-                  color: AppColors.textPrimary,
+                  color: AppColors.textSecondary,
                   fontSize: 16,
                 ),
               ),
@@ -53,7 +58,7 @@ class InvestmentListScreen extends StatelessWidget {
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
                       content: Text('${investment.propertyName} deleted'),
-                      backgroundColor: Theme.of(context).primaryColor,
+                      backgroundColor: AppColors.accent,
                     ),
                   );
                 },
@@ -72,8 +77,8 @@ class InvestmentListScreen extends StatelessWidget {
             MaterialPageRoute(builder: (context) => const AddInvestmentScreen()),
           );
         },
-        child: const Icon(Icons.add),
-        backgroundColor: AppColors.primary,
+        backgroundColor: AppColors.accent,
+        child: const Icon(Icons.add, color: Colors.black),
       ),
     );
   }
