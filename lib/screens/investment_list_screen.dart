@@ -38,6 +38,7 @@ class InvestmentListScreen extends StatelessWidget {
           }
           
           return ListView.builder(
+            padding: const EdgeInsets.only(top: 8, bottom: 80),
             itemCount: box.values.length,
             itemBuilder: (context, index) {
               final investment = box.getAt(index)!;

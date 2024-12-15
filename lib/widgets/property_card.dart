@@ -15,13 +15,26 @@ class PropertyCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final currencyFormatter = NumberFormat.currency(symbol: '\$');
+    final currencyFormatter = NumberFormat.currency(
+      locale: 'en_US',
+      symbol: '\$',
+      decimalDigits: 0,
+    ).format;
+    
+    String formatNumber(double value) {
+      String formatted = currencyFormatter(value);
+      return formatted.replaceAll(',', '.');
+    }
 
     return Container(
-      margin: const EdgeInsets.all(16),
+      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       decoration: BoxDecoration(
         color: AppColors.surface,
         borderRadius: BorderRadius.circular(24),
+        border: Border.all(
+          color: AppColors.accent.withOpacity(0.5),
+          width: 1,
+        ),
         boxShadow: [
           BoxShadow(
             color: Colors.black.withOpacity(0.2),
@@ -31,8 +44,9 @@ class PropertyCard extends StatelessWidget {
         ],
       ),
       child: Padding(
-        padding: const EdgeInsets.all(24),
+        padding: const EdgeInsets.all(16),
         child: Column(
+          mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Row(
@@ -44,12 +58,12 @@ class PropertyCard extends StatelessWidget {
                     Text(
                       investment.propertyName,
                       style: const TextStyle(
-                        fontSize: 24,
+                        fontSize: 22,
                         fontWeight: FontWeight.bold,
                         color: AppColors.textPrimary,
                       ),
                     ),
-                    const SizedBox(height: 4),
+                    const SizedBox(height: 2),
                     const Text(
                       'Premium Property',
                       style: TextStyle(
@@ -62,7 +76,7 @@ class PropertyCard extends StatelessWidget {
                 Container(
                   padding: const EdgeInsets.symmetric(
                     horizontal: 16,
-                    vertical: 8,
+                    vertical: 6,
                   ),
                   decoration: BoxDecoration(
                     color: AppColors.overlay,
@@ -81,9 +95,9 @@ class PropertyCard extends StatelessWidget {
                 ),
               ],
             ),
-            const SizedBox(height: 24),
+            const SizedBox(height: 12),
             Container(
-              padding: const EdgeInsets.all(16),
+              padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
               decoration: BoxDecoration(
                 color: AppColors.overlay,
                 borderRadius: BorderRadius.circular(16),
@@ -91,74 +105,96 @@ class PropertyCard extends StatelessWidget {
                   color: Colors.white.withOpacity(0.1),
                 ),
               ),
-              child: Column(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const Text(
-                            'Total Investment',
-                            style: TextStyle(
-                              color: AppColors.textSecondary,
-                              fontSize: 14,
-                            ),
-                          ),
-                          const SizedBox(height: 4),
-                          Text(
-                            currencyFormatter.format(investment.investmentAmount),
-                            style: const TextStyle(
-                              color: AppColors.accent,
-                              fontSize: 24,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ],
+                      const Text(
+                        'Total Investment',
+                        style: TextStyle(
+                          color: AppColors.textSecondary,
+                          fontSize: 14,
+                        ),
                       ),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const Text(
-                            'Paid Amount',
-                            style: TextStyle(
-                              color: AppColors.textSecondary,
-                              fontSize: 14,
-                            ),
-                          ),
-                          const SizedBox(height: 4),
-                          Text(
-                            currencyFormatter.format(investment.amountPaid),
-                            style: const TextStyle(
-                              color: AppColors.textPrimary,
-                              fontSize: 24,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ],
+                      const SizedBox(height: 2),
+                      Text(
+                        formatNumber(investment.investmentAmount),
+                        style: const TextStyle(
+                          color: AppColors.accent,
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ],
+                  ),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      const Text(
+                        'Paid Amount',
+                        style: TextStyle(
+                          color: AppColors.textSecondary,
+                          fontSize: 14,
+                        ),
+                      ),
+                      const SizedBox(height: 2),
+                      Text(
+                        formatNumber(investment.amountPaid),
+                        style: const TextStyle(
+                          color: AppColors.textPrimary,
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
                     ],
                   ),
                 ],
               ),
             ),
-            const SizedBox(height: 24),
-            Container(
-              height: 1,
-              color: AppColors.divider,
+            const Padding(
+              padding: EdgeInsets.symmetric(vertical: 12),
+              child: Divider(color: AppColors.divider),
             ),
-            const SizedBox(height: 24),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 _buildInfoPill(
-                  icon: Icons.location_on,
-                  text: investment.location,
+                  child: Row(
+                    children: [
+                      CustomPaint(
+                        size: const Size(16, 16),
+                        painter: LocationPinPainter(color: AppColors.accent),
+                      ),
+                      const SizedBox(width: 8),
+                      Text(
+                        investment.location,
+                        style: const TextStyle(
+                          color: AppColors.textPrimary,
+                          fontSize: 14,
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
                 _buildInfoPill(
-                  icon: Icons.square_foot,
-                  text: '${investment.area} m²',
+                  child: Row(
+                    children: [
+                      CustomPaint(
+                        size: const Size(16, 16),
+                        painter: AreaIconPainter(color: AppColors.accent),
+                      ),
+                      const SizedBox(width: 8),
+                      Text(
+                        '${investment.area} m²',
+                        style: const TextStyle(
+                          color: AppColors.textPrimary,
+                          fontSize: 14,
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ],
             ),
@@ -169,13 +205,12 @@ class PropertyCard extends StatelessWidget {
   }
 
   Widget _buildInfoPill({
-    required IconData icon,
-    required String text,
+    required Widget child,
   }) {
     return Container(
       padding: const EdgeInsets.symmetric(
         horizontal: 16,
-        vertical: 8,
+        vertical: 6,
       ),
       decoration: BoxDecoration(
         color: AppColors.overlay,
@@ -184,23 +219,79 @@ class PropertyCard extends StatelessWidget {
           color: Colors.white.withOpacity(0.1),
         ),
       ),
-      child: Row(
-        children: [
-          Icon(
-            icon,
-            size: 16,
-            color: AppColors.accent,
-          ),
-          const SizedBox(width: 8),
-          Text(
-            text,
-            style: const TextStyle(
-              color: AppColors.textPrimary,
-              fontSize: 14,
-            ),
-          ),
-        ],
-      ),
+      child: child,
     );
   }
+}
+
+class LocationPinPainter extends CustomPainter {
+  final Color color;
+
+  LocationPinPainter({required this.color});
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    final paint = Paint()
+      ..color = color
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = 1.5;
+
+    final path = Path();
+    
+    path.moveTo(size.width * 0.5, size.height * 0.9);
+    path.cubicTo(
+      size.width * 0.2, size.height * 0.7,
+      size.width * 0.2, size.height * 0.3,
+      size.width * 0.5, size.height * 0.3
+    );
+    path.cubicTo(
+      size.width * 0.8, size.height * 0.3,
+      size.width * 0.8, size.height * 0.7,
+      size.width * 0.5, size.height * 0.9
+    );
+
+    canvas.drawPath(path, paint);
+    canvas.drawCircle(
+      Offset(size.width * 0.5, size.height * 0.5),
+      size.width * 0.15,
+      Paint()..color = color
+    );
+  }
+
+  @override
+  bool shouldRepaint(CustomPainter oldDelegate) => false;
+}
+
+class AreaIconPainter extends CustomPainter {
+  final Color color;
+
+  AreaIconPainter({required this.color});
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    final paint = Paint()
+      ..color = color
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = 1.5;
+
+    final path = Path();
+    
+    path.moveTo(size.width * 0.3, size.height * 0.7);
+    path.lineTo(size.width * 0.7, size.height * 0.3);
+    
+    path.moveTo(size.width * 0.3, size.height * 0.7);
+    path.lineTo(size.width * 0.3, size.height * 0.6);
+    path.moveTo(size.width * 0.3, size.height * 0.7);
+    path.lineTo(size.width * 0.4, size.height * 0.7);
+    
+    path.moveTo(size.width * 0.7, size.height * 0.3);
+    path.lineTo(size.width * 0.7, size.height * 0.4);
+    path.moveTo(size.width * 0.7, size.height * 0.3);
+    path.lineTo(size.width * 0.6, size.height * 0.3);
+    
+    canvas.drawPath(path, paint);
+  }
+
+  @override
+  bool shouldRepaint(CustomPainter oldDelegate) => false;
 }
