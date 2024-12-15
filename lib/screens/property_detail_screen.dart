@@ -54,9 +54,13 @@ class PropertyDetailScreen extends StatelessWidget {
           .toList()
         ..sort((a, b) => a.dueDate.compareTo(b.dueDate));
 
-      // Считаем общую сумму платежей
-      final totalPaid = propertyPayments.fold<double>(
-        0, (sum, payment) => sum + payment.amount
+      // Считаем сумму завершенных платежей из графика
+      final completedScheduledPayments = scheduledPayments
+          .where((payment) => payment.isCompleted)
+          .toList();
+
+      final totalPaid = completedScheduledPayments.fold<double>(
+        0, (sum, payment) => sum + payment.plannedAmount
       );
 
       // Считаем процент выплаты
@@ -68,13 +72,11 @@ class PropertyDetailScreen extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Информация о недвижимости
             PropertyCard(
               investment: investment,
               isDetailScreen: true,
             ),
             
-            // Прогресс выплат
             Padding(
               padding: const EdgeInsets.all(16),
               child: Column(
@@ -115,7 +117,6 @@ class PropertyDetailScreen extends StatelessWidget {
               ),
             ),
 
-            // Запланированные платежи
             if (scheduledPayments.isNotEmpty) ...[
               const Padding(
                 padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
@@ -244,7 +245,6 @@ class PropertyDetailScreen extends StatelessWidget {
                 ),
               ),
 
-            // История платежей
             const Padding(
               padding: EdgeInsets.all(16),
               child: Text(
@@ -323,7 +323,7 @@ class PropertyDetailScreen extends StatelessWidget {
                   );
                 },
               ),
-            const SizedBox(height: 80), // Отступ для FAB
+            const SizedBox(height: 80),
           ],
         ),
       );
